@@ -1,0 +1,45 @@
+.hero {
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  opacity: 0.9;
+}
+
+.section {
+  margin-bottom: 60px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 10px;
+}
+
+.sectionText {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #444;
+}
+
+.sectionText p {
+  margin-bottom: 15px;
+}

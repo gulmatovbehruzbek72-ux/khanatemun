@@ -1,0 +1,50 @@
+.section {
+  padding: 80px 0;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 30px;
+  line-height: 1.2;
+}
+
+.content {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  max-width: 800px;
+}
+
+.content p {
+  margin-bottom: 20px;
+}
+
+.hero {
+  min-height: 80vh;
+  text-align: center;
+}
+
+.hero .content {
+  margin: 0 auto;
+}
+
+.hero .title {
+  font-size: 5rem;
+}
+
+.grid {
+  /* Future: implement grid layouts for sections */
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  .hero .title {
+    font-size: 3.5rem;
+  }
+}

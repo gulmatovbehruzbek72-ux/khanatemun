@@ -1,0 +1,72 @@
+.wrapper {
+  padding: 60px 0;
+}
+
+.mainTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.partWrapper {
+  margin-bottom: 50px;
+}
+
+.partTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  border-left: 6px solid currentColor;
+  padding-left: 15px;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  background: white;
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 20px;
+  border-bottom: 2px solid #eee;
+  color: #666;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.table td {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.time {
+  font-weight: 700;
+  color: #333;
+  white-space: nowrap;
+}
+
+.activity {
+  font-weight: 500;
+  color: #555;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .mainTitle {
+    font-size: 2.2rem;
+  }
+}

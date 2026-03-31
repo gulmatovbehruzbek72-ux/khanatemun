@@ -1,0 +1,95 @@
+Create a fully functional, modern, professional, and deployable website for **Khanate MUN**. The website should be dynamic, interactive, and fully manageable by the admin. Use HTML, CSS, and JS; optionally React or Next.js. Ensure mobile responsiveness, accessibility, and performance optimization.  
+
+**Core Requirements:**
+
+1. **Branding:**  
+   - Include **Khanate MUN logo** from the project folder in header and relevant pages.  
+   - Favicon using the logo.  
+
+2. **Admin Dashboard Features:**  
+   - Add, edit, and remove: events, news, schedules, committees, images, contact details, organising team members.  
+   - Add/remove committees entirely.  
+   - Admin-controlled **countdown timer** with start/stop/reset buttons and editable text/colors.  
+   - **Themes:** admin can select from predefined color/font themes for the whole site.  
+   - Admin can set custom **background image or color** per tab/page, with real-time preview (hex codes supported).  
+   - Custom fonts for headings and body text selectable by admin.  
+   - Analytics dashboard: show stats like total registrations, most active committees, upcoming sessions, past sessions count, etc.  
+   - Editable social media links.  
+   - Download registered participant details as a file.  
+
+3. **Pages and Sections:**  
+
+   **Homepage:**  
+   - Introduction to Khanate MUN.  
+   - Latest news and dynamic event highlights (rotating cards).  
+   - Organising team preview.  
+   - Animated counters (total participants, past sessions, committees).  
+   - Hero section with animations for upcoming events or MUN branding.  
+
+   **About Page:**  
+   - Khanate MUN history, mission, and objectives.  
+
+   **Committees Page:**  
+   - List all committees dynamically.  
+   - Admin can add/remove committees.  
+   - Each committee has a detailed page with: description, chairs, participants, images.  
+   - Interactive cards with hover/flip effects.  
+
+   **Previous Sessions Page:**  
+   - Buttons for each past session (can include images).  
+   - Each session leads to a page with a large title, detailed description, and multiple images.  
+
+   **Registration Page:**  
+   - Form for participants to register for events.  
+
+   **Contact Page:**  
+   - Editable contact info, form, and location map.  
+
+   **Organising Team Section:**  
+   - List all members with role, photo, and brief bio.  
+
+4. **Design & UX:**  
+   - Modern, clean, professional layout.  
+   - Color scheme: blue, white, gray (editable by admin per theme).  
+   - Animations and micro-interactions (buttons, counters, cards, transitions).  
+   - Sticky navigation bar and back-to-top button.  
+   - Accessibility features: high contrast mode, keyboard navigation, screen reader-friendly.  
+   - Lazy loading/progressive image loading for performance.  
+   - Light/Dark mode toggle (optional).  
+   - Responsive for mobile, tablet, and desktop.  
+
+5. **Technical & Deployment:**  
+   - Fully deployable on Vercel.  
+   - Optional API/database integration (Supabase/PostgreSQL) for storing registrations, events, schedules, committees, news, organising team.  
+   - SEO optimization with editable titles, descriptions, and metadata.  
+   - Reusable components: header, footer, nav bar, admin dashboard, schedules tab, previous sessions, committee pages, organising team section, animated counters, and countdown timer.  
+
+**Instructions for Gemini:**  
+- Provide a **complete folder structure** with all pages, components, CSS, and JS.  
+- Include **starter code ready for deployment**, not just snippets.  
+- Make all admin functionality editable via a dashboard.  
+- Exclude resources page and sponsor sections.  
+- Include comments in code for guidance.  
+- Focus on professional animations, interactive elements, and responsive design.  
+
+
+
+
+
+Additional features
+Update the Khanate MUN website with the following enhancements:
+
+1. **Admin Authentication:**  
+   - Implement a **password-protected admin login**.  
+   - Admin password should be **changeable at any time** from the dashboard.  
+
+2. **Enhanced Tabs / Pages:**  
+   - Each tab/page (Homepage, Committees, Previous Sessions, About, Contact, Organising Team) should be **divided into multiple sections/parts**.  
+   - Admin can **set a custom image or background color** for each section independently.  
+   - Real-time preview of chosen colors (with hex codes) must be available in the admin panel.  
+   - Each section should allow for **more content**, including text, images, or data, to make pages longer and more professional.  
+
+3. **General Instructions:**  
+   - Preserve all existing features: countdown timer, themes, analytics, social media links, committees management, organising team, previous sessions, animations, responsive design, and accessibility.  
+   - Ensure the admin dashboard provides easy editing for all new section-based customizations.  
+   - Maintain professional, modern layout and interactive design elements.  
