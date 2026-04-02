@@ -1,0 +1,83 @@
+.footer {
+  background: var(--secondary);
+  padding-top: 60px;
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 40px;
+}
+
+.brand {
+  max-width: 300px;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.logo {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.siteName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.description {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.footer h4 {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.footer ul li {
+  margin-bottom: 12px;
+}
+
+.footer ul a {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.footer ul a:hover {
+  color: var(--accent);
+}
+
+.contact p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.bottomBar {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .footerGrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}

@@ -1,0 +1,152 @@
+.header {
+  height: 80px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1001;
+}
+
+.logo {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.siteName {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.nav ul {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav a {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--foreground);
+  transition: color 0.2s;
+}
+
+.nav a:hover {
+  color: var(--accent);
+}
+
+.adminLink {
+  background: var(--primary);
+  color: white !important;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 1001;
+}
+
+.langSwitcher {
+  display: flex;
+  gap: 5px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.langSwitcher button {
+  color: #888;
+  cursor: pointer;
+}
+
+.langSwitcher button.activeLang {
+  color: var(--primary);
+}
+
+.mobileToggle {
+  display: none;
+  width: 30px;
+  height: 30px;
+  position: relative;
+  cursor: pointer;
+}
+
+.hamburger {
+  width: 20px;
+  height: 2px;
+  background: var(--primary);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s;
+}
+
+.hamburger::before, .hamburger::after {
+  content: '';
+  width: 20px;
+  height: 2px;
+  background: var(--primary);
+  position: absolute;
+  transition: all 0.3s;
+}
+
+.hamburger::before { top: -6px; }
+.hamburger::after { top: 6px; }
+
+.hamburgerOpen { background: transparent; }
+.hamburgerOpen::before { transform: rotate(45deg); top: 0; }
+.hamburgerOpen::after { transform: rotate(-45deg); top: 0; }
+
+@media (max-width: 1100px) {
+  .mobileToggle {
+    display: block;
+  }
+
+  .nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    background: white;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+    padding: 100px 40px;
+  }
+
+  .navOpen {
+    right: 0;
+  }
+
+  .nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+  }
+
+  .nav a {
+    font-size: 1.25rem;
+  }
+}
