@@ -22,6 +22,7 @@ export default function Home() {
       {/* Hero Section */}
       <section 
         className={styles.hero} 
+        aria-label="Khanate MUN Homepage Hero"
         style={{ 
           backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${page.heroImage})`
         }}

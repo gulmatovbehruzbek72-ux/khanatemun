@@ -14,6 +14,7 @@ export default function TeamPage() {
       {/* Hero Section */}
       <section 
         className={styles.hero} 
+        aria-label="Organizing Team Hero"
         style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${page.heroImage})` }}
       >
         <div className="container">

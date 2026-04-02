@@ -163,7 +163,77 @@ export default function AdminDashboard() {
           {/* Dedicated Page Editors */}
           {activeTab === 'home' && renderPageEditor('home')}
           {activeTab === 'about' && renderPageEditor('about')}
-          {activeTab === 'sessions' && renderPageEditor('sessions')}
+          {activeTab === 'sessions' && (
+            <div className={styles.adminSection}>
+              <div className={styles.headerRow}>
+                <h3>Past Sessions</h3>
+                <button className={styles.addBtn} onClick={() => updateData({ 
+                  pastSessions: [...(data.pastSessions || []), { 
+                    id: Date.now().toString(), 
+                    title: { en: 'New Session', uz: 'Yangi sessiya' }, 
+                    shortDescription: { en: '', uz: '' }, 
+                    fullDescription: { en: '', uz: '' }, 
+                    images: [] 
+                  }] 
+                })}>+ Add Session</button>
+              </div>
+              {(data.pastSessions || []).map((s, idx) => (
+                <div key={s.id} className={styles.sectionItem}>
+                  <LanguageInput label="Title" value={s.title} onChange={title => {
+                    const sessions = [...data.pastSessions]; sessions[idx] = { ...s, title }; updateData({ pastSessions: sessions });
+                  }} />
+                  <LanguageInput label="Short Description" textarea value={s.shortDescription} onChange={shortDescription => {
+                    const sessions = [...data.pastSessions]; sessions[idx] = { ...s, shortDescription }; updateData({ pastSessions: sessions });
+                  }} />
+                  <LanguageInput label="Full Description" textarea value={s.fullDescription} onChange={fullDescription => {
+                    const sessions = [...data.pastSessions]; sessions[idx] = { ...s, fullDescription }; updateData({ pastSessions: sessions });
+                  }} />
+                  <div className={styles.formGroup}>
+                    <label>Session Images</label>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '15px', marginTop: '10px' }}>
+                      {(s.images || []).map((img, imgIdx) => (
+                        <div key={imgIdx} style={{ position: 'relative' }}>
+                          <ImageUpload 
+                            currentImage={img} 
+                            onUpload={base64 => {
+                              const images = [...s.images];
+                              images[imgIdx] = base64;
+                              const sessions = [...data.pastSessions];
+                              sessions[idx] = { ...s, images };
+                              updateData({ pastSessions: sessions });
+                            }} 
+                          />
+                          <button 
+                            className={styles.deleteBtn} 
+                            style={{ position: 'absolute', top: '-5px', right: '-5px', padding: '2px 5px', fontSize: '10px' }}
+                            onClick={() => {
+                              const images = s.images.filter((_, i) => i !== imgIdx);
+                              const sessions = [...data.pastSessions];
+                              sessions[idx] = { ...s, images };
+                              updateData({ pastSessions: sessions });
+                            }}
+                          >X</button>
+                        </div>
+                      ))}
+                      <button 
+                        className={styles.addBtn} 
+                        style={{ height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        onClick={() => {
+                          const images = [...(s.images || []), ''];
+                          const sessions = [...data.pastSessions];
+                          sessions[idx] = { ...s, images };
+                          updateData({ pastSessions: sessions });
+                        }}
+                      >+ Add Image</button>
+                    </div>
+                  </div>
+                  <button className={styles.deleteBtn} onClick={() => updateData({ pastSessions: data.pastSessions.filter(item => item.id !== s.id) })}>Delete Session</button>
+                </div>
+              ))}
+              <hr style={{ margin: '40px 0' }} />
+              {renderPageEditor('sessions')}
+            </div>
+          )}
 
           {activeTab === 'team' && (
             <div className={styles.adminSection}>
@@ -182,15 +252,83 @@ export default function AdminDashboard() {
 
           {activeTab === 'committees' && (
             <div className={styles.adminSection}>
-              <div className={styles.headerRow}><h3>Committees</h3><button className={styles.addBtn} onClick={() => updateData({ committees: [...data.committees, { id: Date.now().toString(), name: { en: '', uz: '' }, chairs: { en: '', uz: '' }, description: { en: '', uz: '' } }] })}>+ Add Committee</button></div>
+              <div className={styles.headerRow}>
+                <h3>Committees</h3>
+                <button className={styles.addBtn} onClick={() => updateData({ 
+                  committees: [...data.committees, { 
+                    id: Date.now().toString(), 
+                    name: { en: '', uz: '' }, 
+                    chairs: { en: '', uz: '' }, 
+                    shortDescription: { en: '', uz: '' }, 
+                    fullDescription: { en: '', uz: '' }, 
+                    cardImage: '',
+                    galleryImages: [] 
+                  }] 
+                })}>+ Add Committee</button>
+              </div>
               {data.committees.map((c, idx) => (
                 <div key={c.id} className={styles.sectionItem}>
                   <LanguageInput label="Name" value={c.name} onChange={name => { const committees = [...data.committees]; committees[idx] = { ...c, name }; updateData({ committees }); }} />
                   <LanguageInput label="Chairs" value={c.chairs} onChange={chairs => { const committees = [...data.committees]; committees[idx] = { ...c, chairs }; updateData({ committees }); }} />
-                  <LanguageInput label="Description" textarea value={c.description} onChange={description => { const committees = [...data.committees]; committees[idx] = { ...c, description }; updateData({ committees }); }} />
-                  <button className={styles.deleteBtn} onClick={() => updateData({ committees: data.committees.filter(i => i.id !== c.id) })}>Delete</button>
+                  <LanguageInput label="Short Description" textarea value={c.shortDescription} onChange={shortDescription => { const committees = [...data.committees]; committees[idx] = { ...c, shortDescription }; updateData({ committees }); }} />
+                  <LanguageInput label="Full Description" textarea value={c.fullDescription} onChange={fullDescription => { const committees = [...data.committees]; committees[idx] = { ...c, fullDescription }; updateData({ committees }); }} />
+                  
+                  <div className={styles.formGroup}>
+                    <ImageUpload 
+                      label="Card/Button Image (Shown on list page)" 
+                      currentImage={c.cardImage} 
+                      onUpload={cardImage => {
+                        const committees = [...data.committees];
+                        committees[idx] = { ...c, cardImage };
+                        updateData({ committees });
+                      }} 
+                    />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Gallery Images (Shown on detail page)</label>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '15px', marginTop: '10px' }}>
+                      {(c.galleryImages || []).map((img, imgIdx) => (
+                        <div key={imgIdx} style={{ position: 'relative' }}>
+                          <ImageUpload 
+                            currentImage={img} 
+                            onUpload={base64 => {
+                              const galleryImages = [...c.galleryImages];
+                              galleryImages[imgIdx] = base64;
+                              const committees = [...data.committees];
+                              committees[idx] = { ...c, galleryImages };
+                              updateData({ committees });
+                            }} 
+                          />
+                          <button 
+                            className={styles.deleteBtn} 
+                            style={{ position: 'absolute', top: '-5px', right: '-5px', padding: '2px 5px', fontSize: '10px' }}
+                            onClick={() => {
+                              const galleryImages = c.galleryImages.filter((_, i) => i !== imgIdx);
+                              const committees = [...data.committees];
+                              committees[idx] = { ...c, galleryImages };
+                              updateData({ committees });
+                            }}
+                          >X</button>
+                        </div>
+                      ))}
+                      <button 
+                        className={styles.addBtn} 
+                        style={{ height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        onClick={() => {
+                          const galleryImages = [...(c.galleryImages || []), ''];
+                          const committees = [...data.committees];
+                          committees[idx] = { ...c, galleryImages };
+                          updateData({ committees });
+                        }}
+                      >+ Add Gallery Image</button>
+                    </div>
+                  </div>
+                  <button className={styles.deleteBtn} onClick={() => updateData({ committees: data.committees.filter(i => i.id !== c.id) })}>Delete Committee</button>
                 </div>
               ))}
+              <hr style={{ margin: '40px 0' }} />
+              {renderPageEditor('committees')}
             </div>
           )}
 

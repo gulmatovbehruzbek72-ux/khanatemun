@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useAdmin } from '@/context/AdminContext';
 import styles from './Committees.module.css';
 
@@ -13,6 +14,7 @@ export default function CommitteesPage() {
       {/* Hero Section */}
       <section 
         className={styles.hero} 
+        aria-label="Committees Page Hero"
         style={{ 
           backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${page.heroImage})`
         }}
@@ -28,25 +30,23 @@ export default function CommitteesPage() {
         <div className={styles.grid}>
           {data.committees.map((committee) => {
             const translatedName = t(committee.name);
-            const abbreviation = translatedName.split(' ').map(w => w[0]).join('').toUpperCase();
             
             return (
-              <div key={committee.id} className={styles.card}>
-                <div className={styles.cardInner}>
+              <Link href={`/committees/${committee.id}`} key={committee.id} className={styles.cardLink}>
+                <div className={styles.card}>
                   <div className={styles.cardFront}>
-                    <div className={styles.imagePlaceholder}>
-                      {abbreviation}
+                    <div className={styles.imagePlaceholder} style={committee.cardImage ? { backgroundImage: `url(${committee.cardImage})`, backgroundSize: 'cover' } : {}}>
+                      {!committee.cardImage && translatedName.split(' ').map(w => w[0]).join('').toUpperCase()}
                     </div>
-                    <h3>{translatedName}</h3>
-                    <p className={styles.chairs}>{t(committee.chairs)}</p>
-                  </div>
-                  <div className={styles.cardBack} style={{ background: data.theme.primaryColor }}>
-                    <h3>{translatedName}</h3>
-                    <p>{t(committee.description)}</p>
-                    <button className={styles.detailBtn}>Study Guide</button>
+                    <div className={styles.cardContent}>
+                      <h3>{translatedName}</h3>
+                      <p className={styles.chairs}>{t(committee.chairs)}</p>
+                      <p className={styles.shortDesc}>{t(committee.shortDescription)}</p>
+                      <span className={styles.learnMore}>Learn More →</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>

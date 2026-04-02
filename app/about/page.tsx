@@ -12,6 +12,7 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section 
         className={styles.hero} 
+        aria-label="About Khanate MUN Hero"
         style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${page.heroImage})` }}
       >
         <div className="container">

@@ -8,6 +8,7 @@ export default function CountdownTimer() {
   const { data, t, language } = useAdmin();
   const { countdown } = data;
   
+  const [isMounted, setIsMounted] = useState(false);
   const [timeLeft, setTimeLeft] = useState<{
     days: number;
     hours: number;
@@ -16,6 +17,7 @@ export default function CountdownTimer() {
   } | null>(null);
 
   useEffect(() => {
+    setIsMounted(true);
     if (!countdown.isActive) return;
 
     const timer = setInterval(() => {
@@ -39,7 +41,7 @@ export default function CountdownTimer() {
     return () => clearInterval(timer);
   }, [countdown.targetDate, countdown.isActive]);
 
-  if (!countdown.isActive || !timeLeft) return null;
+  if (!isMounted || !countdown.isActive || !timeLeft) return null;
 
   const wrapperStyle: React.CSSProperties = {
     color: countdown.color,

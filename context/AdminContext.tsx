@@ -24,9 +24,20 @@ export interface PageData {
 export interface Committee {
   id: string;
   name: Translatable;
-  description: Translatable;
+  shortDescription: Translatable;
+  fullDescription: Translatable;
   chairs: Translatable;
-  image?: string;
+  cardImage: string;
+  galleryImages: string[];
+}
+
+export interface PastSession {
+  id: string;
+  title: Translatable;
+  shortDescription: Translatable;
+  fullDescription: Translatable;
+  cardImage: string;
+  galleryImages: string[];
 }
 
 export interface TeamMember {
@@ -143,6 +154,7 @@ const getDefaultData = (): AdminData => ({
   committees: [],
   schedules: [],
   team: [],
+  pastSessions: [],
   registrations: [],
   contactSubmissions: [],
   countdown: {

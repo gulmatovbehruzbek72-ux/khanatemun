@@ -47,6 +47,10 @@ export default function RegistrationPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      alert(language === 'en' ? 'Please enter a valid email.' : 'Iltimos, haqiqiy email kiriting.');
+      return;
+    }
     addRegistration(formData);
     setSubmitted(true);
   };
@@ -68,7 +72,7 @@ export default function RegistrationPage() {
   return (
     <main style={{ backgroundColor: page.backgroundColor, minHeight: '100vh' }}>
       {/* Hero Section */}
-      <section className={styles.hero} style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${page.heroImage})` }}>
+      <section className={styles.hero} aria-label="Registration Page Hero" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${page.heroImage})` }}>
         <div className="container">
           <h1 className={styles.heroTitle}>{t(page.heroTitle)}</h1>
           <p className={styles.heroSubtitle}>{t(page.heroSubtitle)}</p>
