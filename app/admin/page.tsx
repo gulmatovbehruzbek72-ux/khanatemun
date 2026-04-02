@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useAdmin, Translatable, Committee, TeamMember, SchedulePart } from '@/context/AdminContext';
+import { useAdmin, Translatable, PageData } from '@/context/AdminContext';
 import ImageUpload from '@/components/ImageUpload';
 import styles from './Admin.module.css';
 
@@ -85,7 +85,7 @@ export default function AdminDashboard() {
     const p = data.pages[pageKey];
     if (!p) return <div>Error: Page data for {pageKey} missing.</div>;
 
-    const updatePage = (updates: any) => {
+    const updatePage = (updates: Partial<PageData>) => {
       updateData({ pages: { ...data.pages, [pageKey]: { ...p, ...updates } } });
     };
 
@@ -130,7 +130,7 @@ export default function AdminDashboard() {
 
         <nav className={styles.adminTabsNav}>
           {['countdown', 'home', 'about', 'sessions', 'team', 'committees', 'schedules', 'registrations', 'messages', 'footer', 'settings'].map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab as any)} className={activeTab === tab ? styles.tabActive : styles.tabInactive}>
+            <button key={tab} onClick={() => setActiveTab(tab as Tab)} className={activeTab === tab ? styles.tabActive : styles.tabInactive}>
               {tab.toUpperCase()}
             </button>
           ))}
@@ -147,7 +147,7 @@ export default function AdminDashboard() {
               </div>
               <div className={styles.formGroup}>
                 <label>Background Type</label>
-                <select value={data.countdown.backgroundType} onChange={e => updateData({ countdown: { ...data.countdown, backgroundType: e.target.value as any } })}>
+                <select value={data.countdown.backgroundType} onChange={e => updateData({ countdown: { ...data.countdown, backgroundType: e.target.value as 'color' | 'image' } })}>
                   <option value="color">Color</option>
                   <option value="image">Image</option>
                 </select>
@@ -173,7 +173,8 @@ export default function AdminDashboard() {
                     title: { en: 'New Session', uz: 'Yangi sessiya' }, 
                     shortDescription: { en: '', uz: '' }, 
                     fullDescription: { en: '', uz: '' }, 
-                    images: [] 
+                    cardImage: '',
+                    galleryImages: [] 
                   }] 
                 })}>+ Add Session</button>
               </div>
@@ -188,18 +189,31 @@ export default function AdminDashboard() {
                   <LanguageInput label="Full Description" textarea value={s.fullDescription} onChange={fullDescription => {
                     const sessions = [...data.pastSessions]; sessions[idx] = { ...s, fullDescription }; updateData({ pastSessions: sessions });
                   }} />
+                  
                   <div className={styles.formGroup}>
-                    <label>Session Images</label>
+                    <ImageUpload 
+                      label="Card/Button Image (Shown on list page)" 
+                      currentImage={s.cardImage} 
+                      onUpload={cardImage => {
+                        const sessions = [...data.pastSessions];
+                        sessions[idx] = { ...s, cardImage };
+                        updateData({ pastSessions: sessions });
+                      }} 
+                    />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Gallery Images (Shown on detail page)</label>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '15px', marginTop: '10px' }}>
-                      {(s.images || []).map((img, imgIdx) => (
+                      {(s.galleryImages || []).map((img, imgIdx) => (
                         <div key={imgIdx} style={{ position: 'relative' }}>
                           <ImageUpload 
                             currentImage={img} 
                             onUpload={base64 => {
-                              const images = [...s.images];
-                              images[imgIdx] = base64;
+                              const galleryImages = [...s.galleryImages];
+                              galleryImages[imgIdx] = base64;
                               const sessions = [...data.pastSessions];
-                              sessions[idx] = { ...s, images };
+                              sessions[idx] = { ...s, galleryImages };
                               updateData({ pastSessions: sessions });
                             }} 
                           />
@@ -207,9 +221,9 @@ export default function AdminDashboard() {
                             className={styles.deleteBtn} 
                             style={{ position: 'absolute', top: '-5px', right: '-5px', padding: '2px 5px', fontSize: '10px' }}
                             onClick={() => {
-                              const images = s.images.filter((_, i) => i !== imgIdx);
+                              const galleryImages = s.galleryImages.filter((_, i) => i !== imgIdx);
                               const sessions = [...data.pastSessions];
-                              sessions[idx] = { ...s, images };
+                              sessions[idx] = { ...s, galleryImages };
                               updateData({ pastSessions: sessions });
                             }}
                           >X</button>
@@ -219,12 +233,12 @@ export default function AdminDashboard() {
                         className={styles.addBtn} 
                         style={{ height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                         onClick={() => {
-                          const images = [...(s.images || []), ''];
+                          const galleryImages = [...(s.galleryImages || []), ''];
                           const sessions = [...data.pastSessions];
-                          sessions[idx] = { ...s, images };
+                          sessions[idx] = { ...s, galleryImages };
                           updateData({ pastSessions: sessions });
                         }}
-                      >+ Add Image</button>
+                      >+ Add Gallery Image</button>
                     </div>
                   </div>
                   <button className={styles.deleteBtn} onClick={() => updateData({ pastSessions: data.pastSessions.filter(item => item.id !== s.id) })}>Delete Session</button>

@@ -95,6 +95,7 @@ interface AdminData {
     copyright: Translatable;
   };
   committees: Committee[];
+  pastSessions: PastSession[];
   schedules: SchedulePart[];
   team: TeamMember[];
   registrations: Registration[];
@@ -123,7 +124,7 @@ interface AdminContextType {
   updateData: (newData: Partial<AdminData>) => void;
   addRegistration: (reg: Omit<Registration, 'id' | 'timestamp'>) => void;
   addContactSubmission: (msg: Omit<ContactSubmission, 'id' | 'timestamp'>) => void;
-  t: (key: any) => string;
+  t: (key: string | Translatable | undefined | null) => string;
 }
 
 const defaultPage = (titleEn: string, titleUz: string): PageData => ({
@@ -187,7 +188,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         const defaults = getDefaultData();
         
         // Deep merge to ensure all pages and structures exist
-        const merged = {
+        const merged: AdminData = {
           ...defaults,
           ...parsed,
           pages: {
@@ -207,14 +208,19 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
             ...(parsed.theme || {})
           }
         };
-        setData(merged);
+
+        Promise.resolve().then(() => {
+          setData(merged);
+        });
       } catch (e) {
         console.error('Failed to parse admin data', e);
       }
     }
     const sessionAuth = sessionStorage.getItem('khanate_admin_auth');
-    if (sessionAuth === 'true') setIsAuthenticated(true);
-    setIsInitialized(true);
+    Promise.resolve().then(() => {
+      if (sessionAuth === 'true') setIsAuthenticated(true);
+      setIsInitialized(true);
+    });
   }, []);
 
   const login = (password: string) => {
@@ -247,7 +253,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     updateData({ contactSubmissions: [...data.contactSubmissions, newMsg] });
   };
 
-  const t = (key: any): string => {
+  const t = (key: string | Translatable | undefined | null): string => {
     const fallbacks = { en: "Waiting for it", uz: "Kutilmoqda" };
     if (!key) return fallbacks[language];
     if (typeof key === 'string') return key.trim() === '' ? fallbacks[language] : key;

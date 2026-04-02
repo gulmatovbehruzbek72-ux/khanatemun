@@ -17,7 +17,7 @@ export default function CountdownTimer() {
   } | null>(null);
 
   useEffect(() => {
-    setIsMounted(true);
+    Promise.resolve().then(() => setIsMounted(true));
     if (!countdown.isActive) return;
 
     const timer = setInterval(() => {
