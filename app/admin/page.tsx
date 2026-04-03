@@ -131,15 +131,29 @@ export default function AdminDashboard() {
         <h4>Content Sections</h4>
         {(p.sections || []).map((sec, idx) => (
           <div key={sec.id} className={styles.sectionItem}>
-            <LanguageInput label={`Section ${idx + 1} Title`} value={sec.title} onChange={title => {
-              const sections = [...p.sections]; sections[idx] = { ...sec, title }; updatePage({ sections });
-            }} />
-            <LanguageInput label="Content" textarea value={sec.content} onChange={content => {
-              const sections = [...p.sections]; sections[idx] = { ...sec, content }; updatePage({ sections });
-            }} />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', alignItems: 'start' }}>
+              <div>
+                <LanguageInput label={`Section ${idx + 1} Title`} value={sec.title} onChange={title => {
+                  const sections = [...p.sections]; sections[idx] = { ...sec, title }; updatePage({ sections });
+                }} />
+                <LanguageInput label="Content" textarea value={sec.content} onChange={content => {
+                  const sections = [...p.sections]; sections[idx] = { ...sec, content }; updatePage({ sections });
+                }} />
+              </div>
+              <div>
+                <ImageUpload label="Section Image (Optional)" currentImage={sec.image} onUpload={image => {
+                  const sections = [...p.sections]; sections[idx] = { ...sec, image }; updatePage({ sections });
+                }} />
+                {sec.image && (
+                  <button className={styles.deleteBtn} style={{ marginTop: '-10px', marginBottom: '10px' }} onClick={() => {
+                    const sections = [...p.sections]; sections[idx] = { ...sec, image: undefined }; updatePage({ sections });
+                  }}>Clear Image</button>
+                )}
+              </div>
+            </div>
             <button className={styles.deleteBtn} onClick={() => {
               const sections = p.sections.filter(s => s.id !== sec.id); updatePage({ sections });
-            }}>Remove Section</button>
+            }}>Remove Full Section</button>
           </div>
         ))}
         <button className={styles.addBtn} onClick={() => {

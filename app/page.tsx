@@ -4,6 +4,7 @@ import React from 'react';
 import { useAdmin } from '@/context/AdminContext';
 import CountdownTimer from '@/components/CountdownTimer';
 import Schedule from '@/components/Schedule';
+import PageSectionRenderer from '@/components/PageSectionRenderer';
 import styles from './page.module.css';
 
 export default function Home() {
@@ -42,16 +43,7 @@ export default function Home() {
           <CountdownTimer />
         </section>
 
-        <section className="container" style={{ padding: '40px 0' }}>
-          {page.sections.map(sec => (
-            <div key={sec.id} className={styles.contentSection}>
-              <h2 className={styles.sectionTitle} style={{ color: data.theme.primaryColor }}>{t(sec.title)}</h2>
-              <div className={styles.sectionText}>
-                {t(sec.content).split('\n').map((p, i) => <p key={i}>{p}</p>)}
-              </div>
-            </div>
-          ))}
-        </section>
+        <PageSectionRenderer sections={page.sections} />
 
         <section className="container">
           <Schedule />

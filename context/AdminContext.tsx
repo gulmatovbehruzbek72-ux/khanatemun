@@ -11,6 +11,7 @@ export interface PageSection {
   id: string;
   title: Translatable;
   content: Translatable;
+  image?: string;
 }
 
 export interface PageData {

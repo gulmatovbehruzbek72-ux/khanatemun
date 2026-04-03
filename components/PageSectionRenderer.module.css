@@ -1,50 +1,62 @@
+.wrapper {
+  width: 100%;
+}
+
 .section {
-  padding: 80px 0;
-  min-height: 400px;
-  display: flex;
-  align-items: center;
+  padding: 60px 0;
   transition: all 0.3s ease;
 }
 
 .title {
-  font-size: 3rem;
-  font-weight: 800;
+  font-size: 2.5rem;
   margin-bottom: 30px;
-  line-height: 1.2;
+  font-weight: 700;
+  text-align: left;
 }
 
-.content {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  max-width: 800px;
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
 }
 
-.content p {
+/* For larger screens, handle side-by-side with alternating order */
+@media (min-width: 992px) {
+  .contentWrapper {
+    flex-direction: row;
+    align-items: start;
+  }
+
+  .section:nth-child(even) .contentWrapper {
+    flex-direction: row-reverse;
+  }
+}
+
+.textContent {
+  flex: 1;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #444;
+}
+
+.textContent p {
   margin-bottom: 20px;
 }
 
-.hero {
-  min-height: 80vh;
-  text-align: center;
+.imageWrapper {
+  flex: 1;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-.hero .content {
-  margin: 0 auto;
-}
-
-.hero .title {
-  font-size: 5rem;
-}
-
-.grid {
-  /* Future: implement grid layouts for sections */
-}
-
-@media (max-width: 768px) {
-  .title {
-    font-size: 2.5rem;
-  }
-  .hero .title {
-    font-size: 3.5rem;
-  }
+.image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  max-height: 400px;
 }

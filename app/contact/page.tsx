@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useAdmin } from '@/context/AdminContext';
+import PageSectionRenderer from '@/components/PageSectionRenderer';
 import styles from './Contact.module.css';
 
 export default function ContactPage() {
@@ -87,17 +88,9 @@ export default function ContactPage() {
             )}
           </div>
         </div>
-
-        {/* Dynamic Sections from Admin */}
-        {page.sections.map(sec => (
-          <div key={sec.id} style={{ marginTop: '60px' }}>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '20px', color: data.theme.primaryColor }}>{t(sec.title)}</h2>
-            <div style={{ fontSize: '1.2rem', lineHeight: '1.6', color: '#444' }}>
-              {t(sec.content).split('\n').map((p, i) => <p key={i}>{p}</p>)}
-            </div>
-          </div>
-        ))}
       </div>
+
+      <PageSectionRenderer sections={page.sections} />
     </main>
   );
 }
