@@ -1,0 +1,126 @@
+.uploadWrapper {
+  margin-bottom: 25px;
+  padding: 15px;
+  background: #fdfdfd;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+.label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+}
+
+.previewArea {
+  width: 100%;
+  max-width: 320px;
+  height: 200px;
+  background: #f0f2f5;
+  border: 2px dashed #ccd0d5;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder {
+  color: #65676b;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 20px;
+}
+
+.loadingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #003366;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.uploadBtn {
+  background: #003366;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.uploadBtn:hover:not(:disabled) {
+  background: #004080;
+  transform: translateY(-1px);
+}
+
+.uploadBtn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.urlDisplay {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  word-break: break-all;
+  color: #555;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.copyBtn {
+  background: #eee;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.copyBtn:hover {
+  background: #ddd;
+}

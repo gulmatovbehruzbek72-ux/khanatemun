@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useAdmin, Translatable, PageData } from '@/context/AdminContext';
 import ImageUpload from '@/components/ImageUpload';
+import CloudinaryUpload from '@/components/CloudinaryUpload';
 import styles from './Admin.module.css';
 
 const LanguageInput = ({ label, value, onChange, textarea = false }: { label: string, value: Translatable, onChange: (val: Translatable) => void, textarea?: boolean }) => (
@@ -261,6 +262,8 @@ export default function AdminDashboard() {
                   <button className={styles.deleteBtn} onClick={() => updateData({ team: data.team.filter(i => i.id !== m.id) })}>Delete</button>
                 </div>
               ))}
+              <hr style={{ margin: '40px 0' }} />
+              {renderPageEditor('team')}
             </div>
           )}
 
@@ -370,6 +373,8 @@ export default function AdminDashboard() {
             <div className={styles.adminSection}>
               <div className={styles.headerRow}><h3>Registrations</h3></div>
               <div className={styles.regTableWrapper}><table className={styles.table}><thead><tr><th>Name</th><th>Email</th><th>Committee</th></tr></thead><tbody>{data.registrations.map(r => (<tr key={r.id}><td>{r.fullName}</td><td>{r.email}</td><td>{r.committee}</td></tr>))}</tbody></table></div>
+              <hr style={{ margin: '40px 0' }} />
+              {renderPageEditor('registration')}
             </div>
           )}
 
@@ -377,6 +382,8 @@ export default function AdminDashboard() {
             <div className={styles.adminSection}>
               <div className={styles.headerRow}><h3>Messages</h3></div>
               <div className={styles.regTableWrapper}><table className={styles.table}><thead><tr><th>Name</th><th>Email</th><th>Message</th></tr></thead><tbody>{data.contactSubmissions.map(m => (<tr key={m.id}><td>{m.name}</td><td>{m.email}</td><td>{m.message}</td></tr>))}</tbody></table></div>
+              <hr style={{ margin: '40px 0' }} />
+              {renderPageEditor('contact')}
             </div>
           )}
 
@@ -395,6 +402,14 @@ export default function AdminDashboard() {
               <h3>Security & Theme</h3>
               <div className={styles.formGroup}><label>Password</label><input type="text" value={data.password} onChange={e => updateData({ password: e.target.value })} /></div>
               <ColorPicker label="Brand Primary Color" value={data.theme.primaryColor} onChange={primaryColor => updateData({ theme: { ...data.theme, primaryColor } })} />
+              
+              <hr style={{ margin: '40px 0' }} />
+              <h3>Media Library (Direct Cloudinary Upload)</h3>
+              <p style={{ marginBottom: '15px', fontSize: '0.9rem', color: '#666' }}>
+                Use this tool to upload high-quality assets directly to Cloudinary. 
+                You can copy the URL and paste it into any "Hero Background" or "Card Image" field above.
+              </p>
+              <CloudinaryUpload label="Quick Asset Upload" />
             </div>
           )}
         </div>
