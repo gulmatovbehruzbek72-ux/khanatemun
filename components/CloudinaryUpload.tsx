@@ -22,9 +22,9 @@ export default function CloudinaryUpload({ onUploadSuccess, label }: CloudinaryU
     if (!file) return;
 
     // Optional: Basic file validation
-    const maxSize = 10 * 1024 * 1024; // 10MB limit
+    const maxSize = 100 * 1024 * 1024; // 100MB limit
     if (file.size > maxSize) {
-      setError('File is too large (max 10MB)');
+      setError('File is too large (max 100MB)');
       return;
     }
 

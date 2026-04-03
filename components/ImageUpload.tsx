@@ -16,9 +16,9 @@ export default function ImageUpload({ onUpload, currentImage, label }: ImageUplo
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Check file size (limit to 2MB for localStorage stability)
-    if (file.size > 2 * 1024 * 1024) {
-      alert("File is too large. Please upload an image under 2MB.");
+    // Check file size (limit to 3MB for localStorage stability)
+    if (file.size > 3 * 1024 * 1024) {
+      alert("File is too large. For larger files, use the Cloudinary Uploader in Settings.");
       return;
     }
 

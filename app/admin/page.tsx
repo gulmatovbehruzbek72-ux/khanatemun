@@ -66,6 +66,35 @@ export default function AdminDashboard() {
     else setLoginError(true);
   };
 
+  const handleExport = () => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `khanatemun_backup_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const importedData = JSON.parse(event.target?.result as string);
+        if (window.confirm("This will overwrite all current site content. Are you sure?")) {
+          updateData(importedData);
+          alert("Data imported successfully! The page will now refresh.");
+          window.location.reload();
+        }
+      } catch (err) {
+        alert("Invalid backup file.");
+      }
+    };
+    reader.readAsText(file);
+  };
+
   if (!isAuthenticated) {
     return (
       <div className={styles.loginContainer}>
@@ -410,6 +439,21 @@ export default function AdminDashboard() {
                 You can copy the URL and paste it into any "Hero Background" or "Card Image" field above.
               </p>
               <CloudinaryUpload label="Quick Asset Upload" />
+
+              <hr style={{ margin: '40px 0' }} />
+              <h3>Backup & Restore</h3>
+              <p style={{ marginBottom: '15px', fontSize: '0.9rem', color: '#666' }}>
+                Download your entire website content as a backup file, or restore it from a previous save.
+              </p>
+              <div style={{ display: 'flex', gap: '15px' }}>
+                <button onClick={handleExport} className={styles.addBtn} style={{ background: '#28a745' }}>
+                  Download Backup (.json)
+                </button>
+                <label className={styles.addBtn} style={{ background: '#6c757d', cursor: 'pointer', display: 'inline-block' }}>
+                  Restore from File
+                  <input type="file" accept=".json" onChange={handleImport} style={{ display: 'none' }} />
+                </label>
+              </div>
             </div>
           )}
         </div>
