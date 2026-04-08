@@ -52,13 +52,49 @@ const ColorPicker = ({ label, value, onChange }: { label: string, value: string,
 };
 
 export default function AdminDashboard() {
-  const { data, isAuthenticated, login, logout, updateData } = useAdmin();
+  const { data, isAuthenticated, login, logout, updateData, error, setError } = useAdmin();
   const [passwordInput, setPasswordInput] = useState('');
   const [loginError, setLoginError] = useState(false);
   
   // New granular tabs
   type Tab = 'countdown' | 'home' | 'about' | 'sessions' | 'team' | 'committees' | 'schedules' | 'registrations' | 'messages' | 'footer' | 'settings';
   const [activeTab, setActiveTab] = useState<Tab>('countdown');
+
+  const handlePurgeBase64 = async () => {
+    if (!window.confirm("This will replace all images uploaded directly (heavy files) with a placeholder. You will then need to re-add them using Cloudinary URLs. This fixes the 'sync' issue. Proceed?")) return;
+
+    const placeholder = 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070';
+    const newData = { ...data };
+
+    // Clean pages
+    Object.keys(newData.pages).forEach((key) => {
+      const page = newData.pages[key as keyof typeof newData.pages];
+      if (page.heroImage?.startsWith('data:image')) page.heroImage = placeholder;
+      page.sections.forEach(s => {
+        if (s.image?.startsWith('data:image')) s.image = placeholder;
+      });
+    });
+
+    // Clean committees
+    newData.committees.forEach(c => {
+      if (c.cardImage?.startsWith('data:image')) c.cardImage = placeholder;
+      c.galleryImages = c.galleryImages.map(img => img.startsWith('data:image') ? placeholder : img);
+    });
+
+    // Clean sessions
+    newData.pastSessions.forEach(s => {
+      if (s.cardImage?.startsWith('data:image')) s.cardImage = placeholder;
+      s.galleryImages = s.galleryImages.map(img => img.startsWith('data:image') ? placeholder : img);
+    });
+
+    // Clean team
+    newData.team.forEach(m => {
+      if (m.image?.startsWith('data:image')) m.image = placeholder;
+    });
+
+    await updateData(newData);
+    alert("Database purged of heavy images. You can now save normally using Cloudinary URLs.");
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -169,6 +205,12 @@ export default function AdminDashboard() {
       <div className="container">
         <div className={styles.adminHeader}>
           <h2>Dashboard</h2>
+          {error && (
+            <div className={styles.errorBanner}>
+              <span>Error: {error}</span>
+              <button onClick={() => setError(null)}>X</button>
+            </div>
+          )}
           <button onClick={logout} className={styles.logoutBtn}>Logout</button>
         </div>
 
@@ -446,6 +488,20 @@ export default function AdminDashboard() {
               <div className={styles.formGroup}><label>Password</label><input type="text" value={data.password} onChange={e => updateData({ password: e.target.value })} /></div>
               <ColorPicker label="Brand Primary Color" value={data.theme.primaryColor} onChange={primaryColor => updateData({ theme: { ...data.theme, primaryColor } })} />
               
+              <hr style={{ margin: '40px 0' }} />
+              <h3>Database Tools (Fix Sync Issues)</h3>
+              <p style={{ marginBottom: '15px', fontSize: '0.9rem', color: '#666' }}>
+                If your website is not saving or reverting changes, your database might be too full of heavy direct-uploaded images. 
+                Use this tool to purge them and switch to Cloudinary URLs.
+              </p>
+              <button 
+                onClick={handlePurgeBase64} 
+                className={styles.addBtn} 
+                style={{ background: '#dc3545', width: 'auto', padding: '10px 20px', marginBottom: '20px' }}
+              >
+                Purge All Heavy Images (Fix Sync)
+              </button>
+
               <hr style={{ margin: '40px 0' }} />
               <h3>Media Library (Direct Cloudinary Upload)</h3>
               <p style={{ marginBottom: '15px', fontSize: '0.9rem', color: '#666' }}>

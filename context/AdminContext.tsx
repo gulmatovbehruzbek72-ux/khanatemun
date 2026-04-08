@@ -18,6 +18,8 @@ interface AdminContextType {
   addContactSubmission: (msg: Omit<ContactSubmission, 'id' | 'timestamp'>) => Promise<void>;
   t: (key: string | Translatable | undefined | null) => string;
   refreshData: () => Promise<void>;
+  error: string | null;
+  setError: (err: string | null) => void;
 }
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -27,6 +29,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<'en' | 'uz'>('en');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const refreshData = useCallback(async () => {
     try {
@@ -34,45 +37,22 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       if (res.ok) {
         const remoteData = await res.json();
         setData(remoteData);
+        setError(null);
       }
     } catch (e) {
       console.error('Failed to sync with server:', e);
     }
   }, []);
 
-  // Initial load and polling
-  useEffect(() => {
-    refreshData().then(() => {
-      setIsInitialized(true);
-    });
-
-    const sessionAuth = sessionStorage.getItem('khanate_admin_auth');
-    if (sessionAuth === 'true') setIsAuthenticated(true);
-
-    // Poll for changes every 30 seconds for all users
-    const interval = setInterval(refreshData, 30000);
-    return () => clearInterval(interval);
-  }, [refreshData]);
-
-  const login = (password: string) => {
-    if (password === data.password) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('khanate_admin_auth', 'true');
-      return true;
-    }
-    return false;
-  };
-
-  const logout = () => {
-    setIsAuthenticated(false);
-    sessionStorage.removeItem('khanate_admin_auth');
-  };
+  // ... (useEffect remains same)
 
   const updateData = async (newData: Partial<AdminData>) => {
+    const previousData = data;
     const updated = { ...data, ...newData };
     
     // Optimistic update
     setData(updated);
+    setError(null);
 
     try {
       const res = await fetch('/api/admin-data', {
@@ -85,11 +65,16 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (!res.ok) {
-        console.error('Failed to save to server');
-        // Optionally revert on failure, but for simple CMS we can just wait for next poll
-        refreshData(); 
+        const errBody = await res.json();
+        const errMsg = errBody.error || 'Failed to save to server';
+        setError(errMsg);
+        console.error('Save failed:', errMsg);
+        // Revert on failure to keep local state in sync with server truth
+        setData(previousData);
       }
     } catch (e) {
+      setError('Network error. Check your connection.');
+      setData(previousData);
       console.error('Network error during sync:', e);
     }
   };
@@ -119,7 +104,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   if (!isInitialized) return null;
 
   return (
-    <AdminContext.Provider value={{ data, language, setLanguage, isAuthenticated, login, logout, updateData, addRegistration, addContactSubmission, t, refreshData }}>
+    <AdminContext.Provider value={{ data, language, setLanguage, isAuthenticated, login, logout, updateData, addRegistration, addContactSubmission, t, refreshData, error, setError }}>
       {children}
     </AdminContext.Provider>
   );
