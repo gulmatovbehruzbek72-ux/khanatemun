@@ -44,7 +44,33 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // ... (useEffect remains same)
+  // Initial load and polling
+  useEffect(() => {
+    refreshData().then(() => {
+      setIsInitialized(true);
+    });
+
+    const sessionAuth = sessionStorage.getItem('khanate_admin_auth');
+    if (sessionAuth === 'true') setIsAuthenticated(true);
+
+    // Poll for changes every 30 seconds for all users
+    const interval = setInterval(refreshData, 30000);
+    return () => clearInterval(interval);
+  }, [refreshData]);
+
+  const login = (password: string) => {
+    if (password === data.password) {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('khanate_admin_auth', 'true');
+      return true;
+    }
+    return false;
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem('khanate_admin_auth');
+  };
 
   const updateData = async (newData: Partial<AdminData>) => {
     const previousData = data;
