@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import styles from './ImageUpload.module.css';
 
 interface ImageUploadProps {
-  onUpload: (base64: string) => void;
+  onUpload: (url: string) => void;
   currentImage?: string;
   label?: string;
 }
@@ -16,9 +16,9 @@ export default function ImageUpload({ onUpload, currentImage, label }: ImageUplo
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Check file size (limit to 3MB for localStorage stability)
-    if (file.size > 3 * 1024 * 1024) {
-      alert("File is too large. For larger files, use the Cloudinary Uploader in Settings.");
+    // Check file size (limit to 1MB for localStorage/Redis stability)
+    if (file.size > 1 * 1024 * 1024) {
+      alert("This file is too large to upload directly. Please upload it to Cloudinary first and paste the URL below.");
       return;
     }
 
@@ -40,20 +40,35 @@ export default function ImageUpload({ onUpload, currentImage, label }: ImageUplo
           <div className={styles.placeholder}>No Image Selected</div>
         )}
       </div>
-      <input 
-        type="file" 
-        ref={fileInputRef} 
-        onChange={handleFileChange} 
-        accept="image/*" 
-        style={{ display: 'none' }} 
-      />
-      <button 
-        type="button" 
-        className={styles.uploadBtn} 
-        onClick={() => fileInputRef.current?.click()}
-      >
-        {currentImage ? 'Change Image' : 'Upload Image'}
-      </button>
+      
+      <div className={styles.controls}>
+        <div className={styles.urlInputGroup}>
+          <input 
+            type="text" 
+            placeholder="Paste Image URL (Cloudinary link)..." 
+            value={currentImage || ''} 
+            onChange={(e) => onUpload(e.target.value)}
+            className={styles.urlInput}
+          />
+        </div>
+        
+        <div className={styles.uploadActions}>
+          <input 
+            type="file" 
+            ref={fileInputRef} 
+            onChange={handleFileChange} 
+            accept="image/*" 
+            style={{ display: 'none' }} 
+          />
+          <button 
+            type="button" 
+            className={styles.uploadBtn} 
+            onClick={() => fileInputRef.current?.click()}
+          >
+            {currentImage ? 'Change Image' : 'Upload Image'}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
