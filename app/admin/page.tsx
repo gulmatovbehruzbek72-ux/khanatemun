@@ -80,11 +80,11 @@ export default function AdminDashboard() {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       try {
         const importedData = JSON.parse(event.target?.result as string);
         if (window.confirm("This will overwrite all current site content. Are you sure?")) {
-          updateData(importedData);
+          await updateData(importedData);
           alert("Data imported successfully! The page will now refresh.");
           window.location.reload();
         }
